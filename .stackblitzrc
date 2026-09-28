@@ -1,0 +1,6 @@
+{
+  "startCommand": "npm run dev",
+  "env": {
+    "IS_WEBPACK_TEST": "1"
+  }
+}

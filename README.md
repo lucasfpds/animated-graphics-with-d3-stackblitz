@@ -53,11 +53,24 @@ O projeto foi ajustado para não depender de nenhum deles:
    [`src/app/tailwind.css`](./src/app/tailwind.css), importado por `globals.css`; não existe mais
    `postcss.config.mjs`.
 
+3. **`.stackblitzrc` garante o comando certo.** O arquivo na raiz do projeto faz a StackBlitz rodar
+   `npm run dev` (isto é, `next dev --webpack`) e injeta `IS_WEBPACK_TEST=1` nas shells do
+   WebContainer. Essa variável é lida pelo Next em
+   [`lib/bundler.ts`](https://github.com/vercel/next.js/blob/canary/packages/next/src/lib/bundler.ts)
+   exatamente como o `--webpack` (`selectWebpack = options.webpack || process.env.IS_WEBPACK_TEST`),
+   então até `npx next dev` — o comando sugerido pela própria StackBlitz — sobe em webpack em vez de
+   abortar no Turbopack. É redundante quando o script é usado (`--webpack` + a variável apontam para
+   o mesmo bundler, sem conflito).
+
 Basta importar o repositório e rodar normalmente:
 
 ```
 https://stackblitz.com/github/lucasfpds/animated-graphics-with-d3-stackblitz
 ```
+
+> ⚠️ Se a instância na StackBlitz já estava aberta antes deste commit, faça um **reload** depois de
+> sincronizar o repositório: o `.stackblitzrc` (comando de start e variáveis de ambiente) só é lido
+> quando o projeto abre.
 
 Ao usar **novas** classes utilitárias do Tailwind nos componentes, rode `npm run css:build` para
 atualizar o CSS versionado (esse passo precisa de ambiente com binários nativos, ou seja, local).
