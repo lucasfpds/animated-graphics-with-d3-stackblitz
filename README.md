@@ -1,71 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gráficos animados com D3.js (Vue 3)
 
-## Getting Started
+Dashboard com gráficos de barras, linhas e pizza animados com **D3.js**, montado
+em **Vue 3 + Vite + TypeScript**. Os dados vêm de um feed sintético
+determinístico (PRNG semeado com mulberry32): o mesmo tick produz exatamente os
+mesmos números no cliente e nos testes.
 
-First, run the development server:
+## Requisitos
+
+- Node.js 22+ (ou 24+)
+
+## Começando
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-The dashboard uses the system font stack (`system-ui` / `ui-monospace`), so it does not fetch fonts from Google Fonts at build time.
+Abra http://localhost:3000 no navegador.
 
 ## Scripts
 
 | Script | Descrição |
 | --- | --- |
-| `npm run dev` | Servidor de desenvolvimento em http://localhost:3000 (webpack) |
-| `npm run build` | Build de produção (webpack) |
-| `npm run start` | Serve o build de produção |
-| `npm run css:build` | Regenera `src/app/tailwind.css` a partir de `src/app/tailwind.input.css` |
-| `npm run lint` | ESLint (`eslint .`) |
-| `npm run typecheck` | `tsc --noEmit` (rode `npx next typegen` antes) |
-| `npm run test` | Testes unitários (Vitest, execução única) |
+| `npm run dev` | Servidor de desenvolvimento (Vite) |
+| `npm run build` | Type-check + build de produção (`vue-tsc --noEmit && vite build`) |
+| `npm run preview` | Serve o build de produção |
+| `npm run lint` | ESLint (Vue + TypeScript) |
+| `npm run typecheck` | `vue-tsc --noEmit` |
+| `npm run test` | Testes unitários (Vitest + Vue Test Utils) |
 | `npm run test:watch` | Testes em modo watch |
 | `npm run coverage` | Testes com cobertura |
 
+## Estrutura
+
+```
+src/
+  main.ts                  entry: cria o app e importa o CSS global
+  App.vue                  dashboard (estado da UI)
+  styles/globals.css       design tokens + classes globais de série
+  components/              ChartCard, ChartControls, ChartLegend, ChartTooltip
+  components/charts/       BarChart, LineChart, PieChart
+  composables/             use-live-series, use-chart-dimensions, use-prefers-reduced-motion
+  types/charts.ts          tipos compartilhados
+  utils/charts/            matemática pura (escalas, geometria, geradores, formato)
+```
+
+O **D3 desenha o SVG dentro de cada gráfico** (join por `id` + transições). O Vue
+cuida do estado reativo (tooltip, seleção, zoom); a parte mais arriscada
+(interpolação, zoom, geometria) fica em funções puras testáveis em `utils/charts`.
+
 ## Rodando no StackBlitz (WebContainer)
 
-O WebContainer do StackBlitz roda Node.js no navegador e **não** consegue executar binários nativos.
-O projeto foi ajustado para não depender de nenhum deles:
+O WebContainer do StackBlitz roda Node.js no navegador e **não** executa binários
+nativos. O projeto foi ajustado para não depender de nenhum deles:
 
-1. **Sem Turbopack.** `npm run dev` e `npm run build` usam `next dev --webpack` e
-   `next build --webpack`. O Turbopack só funciona com bindings nativos (Rust) e abortava com:
-
-   > Error: Turbopack is not supported on this platform (linux/x64) because native bindings are not
-   > available. Only WebAssembly (WASM) bindings were loaded, and Turbopack requires native bindings.
-
-   O SWC continua disponível em WASM (`@next/swc-wasm-nodejs`), que o Next.js baixa e usa sozinho
-   quando não há binário nativo — nada a configurar.
-
-2. **Sem Tailwind no build.** O Tailwind v4 depende do `@tailwindcss/oxide` (Rust) e falharia com
-   "Cannot find native binding". O CSS do Tailwind é pré-compilado e versionado em
-   [`src/app/tailwind.css`](./src/app/tailwind.css), importado por `globals.css`; não existe mais
-   `postcss.config.mjs`.
-
-3. **`.stackblitzrc` garante o comando certo.** O arquivo na raiz do projeto faz a StackBlitz rodar
-   `npm run dev` (isto é, `next dev --webpack`) e injeta `IS_WEBPACK_TEST=1` nas shells do
-   WebContainer. Essa variável é lida pelo Next em
-   [`lib/bundler.ts`](https://github.com/vercel/next.js/blob/canary/packages/next/src/lib/bundler.ts)
-   exatamente como o `--webpack` (`selectWebpack = options.webpack || process.env.IS_WEBPACK_TEST`),
-   então até `npx next dev` — o comando sugerido pela própria StackBlitz — sobe em webpack em vez de
-   abortar no Turbopack. É redundante quando o script é usado (`--webpack` + a variável apontam para
-   o mesmo bundler, sem conflito).
-
-4. **Sem `next/font/google`.** O `next/font` baixa as fontes do Google Fonts em tempo de
-   compilação e falha atrás de proxy corporativo ("self-signed certificate in certificate chain") e
-   no WebContainer. O [`layout.tsx`](./src/app/layout.tsx) não usa mais `next/font`; a pilha de fontes
-   do sistema é definida direto em [`globals.css`](./src/app/globals.css).
+1. **Vite em vez de Turbopack/Next.** O Vite é JavaScript puro, então sobe sem
+   bindings nativos.
+2. **Sem Tailwind no build.** Os estilos são CSS Modules (`<style module>`) +
+   design tokens em `globals.css`, sem PostCSS/Tailwind (que dependem de binário
+   Rust).
+3. **Sem `next/font`.** A tipografia usa a pilha de fontes do sistema.
 
 Basta importar o repositório e rodar normalmente:
 
@@ -73,24 +67,9 @@ Basta importar o repositório e rodar normalmente:
 https://stackblitz.com/github/lucasfpds/animated-graphics-with-d3-stackblitz
 ```
 
-> ⚠️ Se a instância na StackBlitz já estava aberta antes deste commit, faça um **reload** depois de
-> sincronizar o repositório: o `.stackblitzrc` (comando de start e variáveis de ambiente) só é lido
-> quando o projeto abre.
+## Acessibilidade
 
-Ao usar **novas** classes utilitárias do Tailwind nos componentes, rode `npm run css:build` para
-atualizar o CSS versionado (esse passo precisa de ambiente com binários nativos, ou seja, local).
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Cada gráfico é um `<svg role="group">` com `<title>` e `<desc>`.
+- Barras e fatias são focáveis (`tabindex=0` + `role="button"`) e reagem a
+  Enter/clique.
+- `prefers-reduced-motion` zera a duração das transições do D3.

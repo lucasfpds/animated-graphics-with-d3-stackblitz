@@ -1,20 +1,14 @@
 import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import pluginVue from "eslint-plugin-vue";
+import vueTsEslintConfig from "@vue/eslint-config-typescript";
 
-const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
+export default defineConfig([
   globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-    // Artefatos gerados por `npm run coverage`:
+    "dist/**",
     "coverage/**",
+    "node_modules/**",
+    "*.config.{ts,mts,js,mjs}",
   ]),
+  ...pluginVue.configs["flat/essential"],
+  ...vueTsEslintConfig(),
 ]);
-
-export default eslintConfig;

@@ -77,3 +77,62 @@ export type ZoomTransformState = {
 
 /** Domínio numérico fechado `[min, max]`. */
 export type NumericDomain = [number, number];
+
+/** Item da legenda compartilhada pelos gráficos. */
+export type ChartLegendItem = {
+  id: string;
+  label: string;
+  /** Classe global de série (`ds-series-*`) que define a cor. */
+  className: string;
+  value?: string;
+  series?: SeriesKey;
+};
+
+/** Direção da tendência exibida no destaque de um cartão. */
+export type ChartCardTrend = "up" | "down" | "flat";
+
+/** Destaque numérico exibido no cabeçalho de um cartão. */
+export type ChartCardHighlight = {
+  label: string;
+  value: string;
+  /** Variação já formatada (ex.: "+12,4%"). */
+  variation?: string;
+  trend?: ChartCardTrend;
+};
+
+/** Props do gráfico de barras. */
+export type BarChartProps = {
+  points: readonly DataPoint[];
+  metric: SeriesKey;
+  title: string;
+  description: string;
+  height?: number;
+  duration?: number;
+  selectedId?: string | null;
+  onSelect?: (point: DataPoint) => void;
+};
+
+/** Props do gráfico de linhas. */
+export type LineChartProps = {
+  points: readonly DataPoint[];
+  metric: SeriesKey;
+  title: string;
+  description: string;
+  height?: number;
+  duration?: number;
+  /** Limite de ampliação do zoom. */
+  maxZoom?: number;
+};
+
+/** Props do gráfico de pizza. */
+export type PieChartProps = {
+  data: readonly PieDatum[];
+  title: string;
+  description: string;
+  height?: number;
+  duration?: number;
+  selectedSeries?: SeriesKey | null;
+  /** Chamado ao clicar numa fatia (filtra a série do gráfico de linhas). */
+  onSelect?: (series: SeriesKey) => void;
+  showLegend?: boolean;
+};
