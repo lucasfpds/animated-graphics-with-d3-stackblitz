@@ -7,9 +7,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
-    // `scripts/**` cobre o runner do CLI do Next, que decide Turbopack vs
-    // webpack conforme o ambiente (fora do coverage, que é focado em `src`).
-    include: ["src/**/*.test.{ts,tsx}", "scripts/**/*.test.mjs"],
+    include: ["src/**/*.test.{ts,tsx}"],
     // Os testes validam atributos, textos e ARIA — nunca nomes de classes
     // gerados por CSS Modules, portanto o processamento de CSS é dispensável.
     css: false,

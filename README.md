@@ -24,11 +24,10 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 | Script | Descrição |
 | --- | --- |
-| `npm run dev` | Servidor de desenvolvimento em http://localhost:3000 |
-| `npm run dev:webpack` | Força o webpack no desenvolvimento (escape hatch) |
-| `npm run build` | Build de produção |
-| `npm run build:webpack` | Força o webpack no build (escape hatch) |
+| `npm run dev` | Servidor de desenvolvimento em http://localhost:3000 (webpack) |
+| `npm run build` | Build de produção (webpack) |
 | `npm run start` | Serve o build de produção |
+| `npm run css:build` | Regenera `src/app/tailwind.css` a partir de `src/app/tailwind.input.css` |
 | `npm run lint` | ESLint (`eslint .`) |
 | `npm run typecheck` | `tsc --noEmit` (rode `npx next typegen` antes) |
 | `npm run test` | Testes unitários (Vitest, execução única) |
@@ -37,29 +36,31 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Rodando no StackBlitz (WebContainer)
 
-O WebContainer do StackBlitz roda Node.js no navegador e **não** executa binários nativos, que é
-justamente o que o Turbopack exige. Nesses ambientes o Next.js carrega os bindings WASM do SWC e o
-Turbopack aborta com:
+O WebContainer do StackBlitz roda Node.js no navegador e **não** consegue executar binários nativos.
+O projeto foi ajustado para não depender de nenhum deles:
 
-> Error: Turbopack is not supported on this platform (linux/x64) because native bindings are not
-> available. Only WebAssembly (WASM) bindings were loaded, and Turbopack requires native bindings.
+1. **Sem Turbopack.** `npm run dev` e `npm run build` usam `next dev --webpack` e
+   `next build --webpack`. O Turbopack só funciona com bindings nativos (Rust) e abortava com:
 
-O projeto trata isso automaticamente: `npm run dev` e `npm run build` passam por
-[`scripts/run-next.mjs`](./scripts/run-next.mjs), que detecta o WebContainer usando o mesmo sinal do
-Next.js (`process.versions.webcontainer`) e adiciona `--webpack`. Basta importar o repositório e
-rodar o script normalmente:
+   > Error: Turbopack is not supported on this platform (linux/x64) because native bindings are not
+   > available. Only WebAssembly (WASM) bindings were loaded, and Turbopack requires native bindings.
+
+   O SWC continua disponível em WASM (`@next/swc-wasm-nodejs`), que o Next.js baixa e usa sozinho
+   quando não há binário nativo — nada a configurar.
+
+2. **Sem Tailwind no build.** O Tailwind v4 depende do `@tailwindcss/oxide` (Rust) e falharia com
+   "Cannot find native binding". O CSS do Tailwind é pré-compilado e versionado em
+   [`src/app/tailwind.css`](./src/app/tailwind.css), importado por `globals.css`; não existe mais
+   `postcss.config.mjs`.
+
+Basta importar o repositório e rodar normalmente:
 
 ```
-https://stackblitz.com/github/lucasfpds/animated-graphics-with-d3-stackblitz?startScript=dev
+https://stackblitz.com/github/lucasfpds/animated-graphics-with-d3-stackblitz
 ```
 
-Para forçar o bundler, use as flags do CLI ou a variável de ambiente:
-
-```bash
-npm run dev:webpack              # webpack explícito
-npm run dev -- --turbopack       # Turbopack explícito (falha onde não há bindings nativos)
-NEXT_BUNDLER=webpack npm run dev # equivalente
-```
+Ao usar **novas** classes utilitárias do Tailwind nos componentes, rode `npm run css:build` para
+atualizar o CSS versionado (esse passo precisa de ambiente com binários nativos, ou seja, local).
 
 ## Learn More
 

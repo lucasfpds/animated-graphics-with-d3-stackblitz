@@ -1,4 +1,9 @@
-@import "tailwindcss";
+/* Tailwind pré-compilado: preflight + as utilidades realmente usadas.
+   O CSS é gerado por `npm run css:build` e fica versionado porque o
+   WebContainer do StackBlitz não carrega os binários nativos (Rust) que o
+   Tailwind v4 precisa no build — sem ele, o PostCSS quebra com
+   "Cannot find native binding". */
+@import "./tailwind.css";
 
 /* ---------------------------------------------------------------------------
    Tokens do design system (fonte de verdade de cor, tipografia e movimento).
@@ -96,20 +101,6 @@
     --ds-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
     --ds-shadow-md: 0 6px 18px rgb(0 0 0 / 45%);
   }
-}
-
-/* Exposição controlada dos tokens ao Tailwind: apenas o necessário para que
-   utilidades de layout não fiquem sem cor de fallback. */
-@theme inline {
-  --color-ds-background: var(--ds-background);
-  --color-ds-surface: var(--ds-surface);
-  --color-ds-surface-muted: var(--ds-surface-muted);
-  --color-ds-border: var(--ds-border);
-  --color-ds-foreground: var(--ds-foreground);
-  --color-ds-foreground-muted: var(--ds-foreground-muted);
-  --color-ds-accent: var(--ds-accent);
-  --font-sans: var(--ds-font-sans);
-  --font-mono: var(--ds-font-mono);
 }
 
 body {
