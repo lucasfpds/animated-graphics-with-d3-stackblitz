@@ -44,9 +44,8 @@
   --ds-tooltip-shadow: 0 10px 24px rgb(15 23 42 / 24%);
 
   /* tipografia */
-  --ds-font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
-    sans-serif;
-  --ds-font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular",
+  --ds-font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ds-font-mono: ui-monospace, "SFMono-Regular", "Menlo", "Consolas",
     monospace;
   --ds-font-size-xs: 0.75rem;
   --ds-font-size-sm: 0.8125rem;

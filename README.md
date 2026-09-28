@@ -18,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The dashboard uses the system font stack (`system-ui` / `ui-monospace`), so it does not fetch fonts from Google Fonts at build time.
 
 ## Scripts
 
@@ -61,6 +61,11 @@ O projeto foi ajustado para não depender de nenhum deles:
    então até `npx next dev` — o comando sugerido pela própria StackBlitz — sobe em webpack em vez de
    abortar no Turbopack. É redundante quando o script é usado (`--webpack` + a variável apontam para
    o mesmo bundler, sem conflito).
+
+4. **Sem `next/font/google`.** O `next/font` baixa as fontes do Google Fonts em tempo de
+   compilação e falha atrás de proxy corporativo ("self-signed certificate in certificate chain") e
+   no WebContainer. O [`layout.tsx`](./src/app/layout.tsx) não usa mais `next/font`; a pilha de fontes
+   do sistema é definida direto em [`globals.css`](./src/app/globals.css).
 
 Basta importar o repositório e rodar normalmente:
 
