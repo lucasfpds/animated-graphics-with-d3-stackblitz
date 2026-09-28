@@ -1,0 +1,44 @@
+[
+  {
+    "id": "revenue-Visitantes",
+    "label": "Visitantes",
+    "value": 86400,
+    "comparison": 79200,
+    "timestamp": 1767240000000
+  },
+  {
+    "id": "revenue-Cadastros",
+    "label": "Cadastros",
+    "value": 51200,
+    "comparison": 54800,
+    "timestamp": 1767240000000
+  },
+  {
+    "id": "revenue-Qualificados",
+    "label": "Qualificados",
+    "value": 31400,
+    "comparison": 28900,
+    "timestamp": 1767240000000
+  },
+  {
+    "id": "revenue-Propostas",
+    "label": "Propostas",
+    "value": 19800,
+    "comparison": 21100,
+    "timestamp": 1767240000000
+  },
+  {
+    "id": "revenue-Negociação",
+    "label": "Negociação",
+    "value": 12400,
+    "comparison": 11800,
+    "timestamp": 1767240000000
+  },
+  {
+    "id": "revenue-Fechamento",
+    "label": "Fechamento",
+    "value": 7300,
+    "comparison": 6900,
+    "timestamp": 1767240000000
+  }
+]

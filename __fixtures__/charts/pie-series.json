@@ -1,0 +1,5 @@
+[
+  { "id": "share-revenue", "label": "Receita", "value": 412000, "series": "revenue" },
+  { "id": "share-users", "label": "Usuários ativos", "value": 286000, "series": "users" },
+  { "id": "share-conversions", "label": "Conversões", "value": 96000, "series": "conversions" }
+]

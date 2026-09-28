@@ -1,0 +1,44 @@
+[
+  {
+    "id": "users-1767225600000",
+    "label": "01 de jan.",
+    "value": 820,
+    "comparison": 790,
+    "timestamp": 1767225600000
+  },
+  {
+    "id": "users-1767247200000",
+    "label": "01 de jan.",
+    "value": 905,
+    "comparison": 860,
+    "timestamp": 1767247200000
+  },
+  {
+    "id": "users-1767268800000",
+    "label": "02 de jan.",
+    "value": 1180,
+    "comparison": 990,
+    "timestamp": 1767268800000
+  },
+  {
+    "id": "users-1767290400000",
+    "label": "02 de jan.",
+    "value": 1040,
+    "comparison": 1120,
+    "timestamp": 1767290400000
+  },
+  {
+    "id": "users-1767312000000",
+    "label": "03 de jan.",
+    "value": 1420,
+    "comparison": 1210,
+    "timestamp": 1767312000000
+  },
+  {
+    "id": "users-1767333600000",
+    "label": "03 de jan.",
+    "value": 1680,
+    "comparison": 1520,
+    "timestamp": 1767333600000
+  }
+]

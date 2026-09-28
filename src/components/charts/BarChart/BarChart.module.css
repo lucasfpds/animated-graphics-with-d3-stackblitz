@@ -1,0 +1,53 @@
+.chart {
+  display: block;
+  max-width: 100%;
+}
+
+.axis :global(.domain),
+.axis :global(.tick line) {
+  stroke: var(--ds-grid);
+}
+
+.axis :global(.tick text) {
+  fill: var(--ds-foreground-muted);
+  font-size: var(--ds-font-size-xs);
+}
+
+.bar {
+  fill: var(--ds-series-color, var(--ds-accent));
+  opacity: 0.92;
+  cursor: default;
+  transition:
+    opacity var(--ds-duration-fast) var(--ds-ease-out),
+    stroke-width var(--ds-duration-fast) var(--ds-ease-out);
+}
+
+.bar[data-clickable="true"] {
+  cursor: pointer;
+}
+
+.bar[data-active="true"],
+.bar[data-selected="true"] {
+  opacity: 1;
+  stroke: var(--ds-foreground);
+  stroke-width: 2;
+}
+
+.bar:focus-visible {
+  outline: none;
+  stroke: var(--ds-accent);
+  stroke-width: 3;
+}
+
+.bar-reference {
+  stroke: var(--ds-foreground-muted);
+  stroke-dasharray: 4 3;
+  stroke-width: 2;
+  /* Fica acima das barras no DOM: não pode interceptar o ponteiro. */
+  pointer-events: none;
+}
+
+.empty {
+  color: var(--ds-foreground-muted);
+  font-size: var(--ds-font-size-sm);
+}

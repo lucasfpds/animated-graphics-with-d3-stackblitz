@@ -1,0 +1,61 @@
+.card {
+  padding: 20px;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-sm);
+}
+
+.title {
+  font-size: var(--ds-font-size-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.description {
+  margin-top: 4px;
+  color: var(--ds-foreground-muted);
+  font-size: var(--ds-font-size-sm);
+}
+
+.highlight {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.highlight-label {
+  color: var(--ds-foreground-muted);
+  font-size: var(--ds-font-size-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.highlight-value {
+  font-size: var(--ds-font-size-lg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.highlight-variation {
+  font-size: var(--ds-font-size-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.highlight-variation[data-trend="up"] {
+  color: var(--ds-series-3);
+}
+
+.highlight-variation[data-trend="down"] {
+  color: var(--ds-series-2);
+}
+
+.highlight-variation[data-trend="flat"] {
+  color: var(--ds-foreground-muted);
+}
+
+/* Referência de posicionamento para o tooltip absoluto de cada gráfico. */
+.body {
+  position: relative;
+}
